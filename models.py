@@ -34,11 +34,10 @@ class AdsAPI(metaclass=ABCMeta):
         """Init. Getting env & configs from envs"""
 
         self.ads_account_id = ads_account_id
-        self.session = self.get_sessions()
-        self.table = self._get_table()
-        self.keys, self.fields, self.schema = self.get_config()
-        self.start, self.end = self.get_time_range(start, end)
-        self.ads_account_name = self.get_ads_account_name()
+        self.session = self._get_sessions()
+        self.keys, self.fields, self.schema = self._get_config()
+        self.start, self.end = self._get_time_range(start, end)
+        self.ads_account_name = self._get_ads_account_name()
 
     @staticmethod
     def factory(ads_account_id, start, end, mode):
@@ -70,7 +69,7 @@ class AdsAPI(metaclass=ABCMeta):
         else:
             raise NotImplementedError(*args)
 
-    def get_config(self):
+    def _get_config(self):
         """Get config from JSON
 
         Returns:
@@ -81,7 +80,7 @@ class AdsAPI(metaclass=ABCMeta):
             config = json.load(f)
         return config.get("keys"), config.get("fields"), config.get("schema")
 
-    def get_time_range(self, _start, _end):
+    def _get_time_range(self, _start, _end):
         """Get time range
 
         Args:
@@ -100,7 +99,7 @@ class AdsAPI(metaclass=ABCMeta):
             end = NOW.strftime(DATE_FORMAT)
         return start, end
 
-    def get_sessions(self):
+    def _get_sessions(self):
         """Initiate HTTP session for requests
 
         Returns:
@@ -117,17 +116,14 @@ class AdsAPI(metaclass=ABCMeta):
         session.mount("https://", adapter)
         return session
 
+    @property
     @abstractmethod
-    def _get_table(self):
-        """Initiate table name
-
-        Returns:
-            str: Table Name
-        """
+    def table(self):
+        """Table name"""
 
         pass
 
-    def get_ads_account_name(self):
+    def _get_ads_account_name(self):
         """Get Ads Account Name to determine dataset
 
         Raises:
@@ -221,7 +217,6 @@ class AdsAPI(metaclass=ABCMeta):
         rows = self.get()
         responses = {
             "ads_account": self.ads_account_id,
-            "dataset": DATASET,
             "table": self.table,
             "start_date": self.start,
             "end_date": self.end,
@@ -356,14 +351,14 @@ class AdsInsights(AdsAPI):
         """
 
         url = f"{BASE_URL}/{report_run_id}/insights"
-        rows = []
         params = {
             "access_token": ACCESS_TOKEN,
             "limit": 500,
         }
+        rows = []
         while True:
             try:
-                with self.session.get(url, params=params) as r:
+                with self.session.get(url, params=params,) as r:
                     r.raise_for_status()
                     res = r.json()
             except requests.exceptions.HTTPError as e:
@@ -429,7 +424,8 @@ class AdsInsightsStandard(AdsInsights):
     def __init__(self, ads_account_id, start, end):
         super().__init__(ads_account_id, start, end)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsInsights"
 
     def _get_breakdowns(self, params):
@@ -463,7 +459,8 @@ class AdsInsightsHourly(AdsInsights):
     def __init__(self, ads_account_id, start, end):
         super().__init__(ads_account_id, start, end)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsInsights_Hourly"
 
     def _get_breakdowns(self, params):
@@ -476,7 +473,8 @@ class AdsInsightsAgeGenders(AdsInsights):
     def __init__(self, ads_account_id, start, end):
         super().__init__(ads_account_id, start, end)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsInsights_AgeGenders"
 
     def _get_breakdowns(self, params):
@@ -490,7 +488,8 @@ class AdsInsightsDevices(AdsInsights):
     def __init__(self, ads_account_id, start, end):
         super().__init__(ads_account_id, start, end)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsInsights_Devices"
 
     def _get_breakdowns(self, params):
@@ -504,7 +503,8 @@ class AdsInsightsCountryRegion(AdsInsights):
     def __init__(self, ads_account_id, start, end):
         super().__init__(ads_account_id, start, end)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsInsights_CountryRegion"
 
     def _get_breakdowns(self, params):
@@ -518,7 +518,8 @@ class AdsCreatives(AdsAPI):
     def __init__(self, ads_account_id):
         super().__init__(ads_account_id)
 
-    def _get_table(self):
+    @property
+    def table(self):
         return "AdsCreatives"
 
     def _get_ad_ids(self):

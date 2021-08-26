@@ -9,7 +9,7 @@ def main(request):
     """Main function as gateway
 
     Args:
-        request (flask.Request): HTTP request 
+        request (flask.Request): HTTP request
 
     Returns:
         dict: Responses
@@ -28,12 +28,13 @@ def main(request):
                 "ads_creatives",
                 "misc",
             ]:
-                message_sent = broadcast(data)
+                results = {
+                    **broadcast(data),
+                    "run": data["broadcast"],
+                }
             else:
                 raise NotImplementedError(data)
-
-            results = {"message_sent": message_sent, "run": data["broadcast"]}
-        elif "ads_account_id" in data and "broadcast" not in data:
+        elif "ads_account_id" in data and "broadcast" not in data and "mode" in data:
             if "mode" == "misc":
                 jobs = [
                     models.AdsAPI.factory(
@@ -43,26 +44,25 @@ def main(request):
                         mode=i,
                     )
                     for i in [
-                        # "hourly",
-                        # "devices",
+                        "hourly",
+                        "devices",
                         "country_region",
-                        # "age_genders",
+                        "age_genders",
                     ]
                 ]
-
             else:
                 jobs = [
                     models.AdsAPI.factory(
                         ads_account_id=data.get("ads_account_id"),
                         start=data.get("start"),
                         end=data.get("end"),
-                        mode=data.get("mode"),
+                        mode=data["mode"],
                     )
                 ]
             results = [job.run() for job in jobs]
         else:
             raise NotImplementedError(data)
-            
+
         responses = {
             "pipelines": "Facebook Ads Insights",
             "results": results,
