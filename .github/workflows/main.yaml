@@ -5,8 +5,9 @@ on:
   workflow_dispatch:
 
 env:
-  FUNCTIONS_NAME: vuanem_fb_ads_insights
+  FUNCTIONS_NAME: evolve_fb_ads_insights
   REGION: us-central1
+  TOPIC_ID: fb_ads_insights
   API_VER: v11.0
 
 jobs:
@@ -33,4 +34,4 @@ jobs:
           --runtime=python38
           --trigger-http
           --service-account=${{ secrets.GCP_SA }}
-          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},API_VER=${{ env.API_VER }},PROJECT_ID=${{ secrets.PROJECT_ID }},TOPIC_ID=${{ secrets.TOPIC_ID }}
+          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},API_VER=${{ env.API_VER }},PROJECT_ID=${{ secrets.PROJECT_ID }},TOPIC_ID=${{ env.TOPIC_ID }}
