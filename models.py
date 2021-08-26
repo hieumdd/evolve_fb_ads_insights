@@ -186,7 +186,7 @@ class AdsAPI(metaclass=ABCMeta):
 
         return BQ_CLIENT.load_table_from_json(
             rows,
-            f"{DATASET}._stage_{self.ads_account_name}_{self.table}",
+            f"{DATASET}._stage_{self.table}_{self.ads_account_name}",
             job_config=bigquery.LoadJobConfig(
                 schema=self.schema,
                 create_disposition="CREATE_IF_NEEDED",
@@ -200,7 +200,7 @@ class AdsAPI(metaclass=ABCMeta):
         template = TEMPLATE_ENV.get_template("update_from_stage.sql.j2")
         rendered_query = template.render(
             dataset=DATASET,
-            table=f"{self.ads_account_name}_{self.table}",
+            table=f"{self.table}_{self.ads_account_name}",
             p_key=",".join(self.keys.get("p_key")),
             incremental_key=self.keys.get("incre_key"),
         )
