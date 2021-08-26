@@ -34,7 +34,7 @@ def main(request):
         else:
             raise NotImplementedError(data)
     elif "ads_account_id" in data and "broadcast" not in data and "mode" in data:
-        if "mode" == "misc":
+        if data["mode"] == "misc":
             jobs = [
                 models.AdsAPI.factory(
                     ads_account_id=data.get("ads_account_id"),
@@ -61,7 +61,7 @@ def main(request):
         results = [job.run() for job in jobs]
     else:
         raise NotImplementedError(data)
-        
+
     responses = {
         "pipelines": "FB Ads Insights",
         "results": results,

@@ -11,6 +11,14 @@ def test_standard():
     process(data)
 
 
+def test_misc():
+    data = {
+        "ads_account_id": ADS_ACCOUNT_ID,
+        "mode": "misc",
+    }
+    process(data)
+
+
 def test_hourly():
     data = {
         "ads_account_id": ADS_ACCOUNT_ID,
