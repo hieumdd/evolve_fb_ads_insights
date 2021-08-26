@@ -21,54 +21,51 @@ def main(request):
     data = json.loads(base64.b64decode(data_bytes).decode("utf-8"))
     print(data)
 
-    if data:
-        if "broadcast" in data:
-            if data["broadcast"] in [
-                "standard",
-                "ads_creatives",
-                "misc",
-            ]:
-                results = {
-                    **broadcast(data),
-                    "run": data["broadcast"],
-                }
-            else:
-                raise NotImplementedError(data)
-        elif "ads_account_id" in data and "broadcast" not in data and "mode" in data:
-            if "mode" == "misc":
-                jobs = [
-                    models.AdsAPI.factory(
-                        ads_account_id=data.get("ads_account_id"),
-                        start=data.get("start"),
-                        end=data.get("end"),
-                        mode=i,
-                    )
-                    for i in [
-                        "hourly",
-                        "devices",
-                        "country_region",
-                        "age_genders",
-                    ]
-                ]
-            else:
-                jobs = [
-                    models.AdsAPI.factory(
-                        ads_account_id=data.get("ads_account_id"),
-                        start=data.get("start"),
-                        end=data.get("end"),
-                        mode=data["mode"],
-                    )
-                ]
-            results = [job.run() for job in jobs]
+    if "broadcast" in data:
+        if data["broadcast"] in [
+            "standard",
+            "ads_creatives",
+            "misc",
+        ]:
+            results = {
+                **broadcast(data),
+                "run": data["broadcast"],
+            }
         else:
             raise NotImplementedError(data)
-
-        responses = {
-            "pipelines": "Facebook Ads Insights",
-            "results": results,
-        }
-        print(responses)
-
-        return responses
+    elif "ads_account_id" in data and "broadcast" not in data and "mode" in data:
+        if "mode" == "misc":
+            jobs = [
+                models.AdsAPI.factory(
+                    ads_account_id=data.get("ads_account_id"),
+                    start=data.get("start"),
+                    end=data.get("end"),
+                    mode=i,
+                )
+                for i in [
+                    "hourly",
+                    "devices",
+                    "country_region",
+                    "age_genders",
+                ]
+            ]
+        else:
+            jobs = [
+                models.AdsAPI.factory(
+                    ads_account_id=data.get("ads_account_id"),
+                    start=data.get("start"),
+                    end=data.get("end"),
+                    mode=data["mode"],
+                )
+            ]
+        results = [job.run() for job in jobs]
     else:
-        raise NotImplementedError
+        raise NotImplementedError(data)
+        
+    responses = {
+        "pipelines": "FB Ads Insights",
+        "results": results,
+    }
+    print(responses)
+
+    return responses

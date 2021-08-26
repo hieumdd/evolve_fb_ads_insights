@@ -12,32 +12,39 @@ def test_standard():
     }
     process_broadcast(data)
 
+def test_misc():
+    data = {
+        "broadcast": "misc",
+        "start": START,
+        "end": END,
+    }
+    process_broadcast(data)
 
-# def test_hourly():
-#     data = {
-#         "broadcast": "hourly",
-#         "start": START,
-#         "end": END,
-#     }
-#     process_broadcast(data)
-
-
-# def test_age_genders():
-#     data = {
-#         "broadcast": "age_genders",
-#         "start": START,
-#         "end": END,
-#     }
-#     process_broadcast(data)
+def test_hourly():
+    data = {
+        "broadcast": "hourly",
+        "start": START,
+        "end": END,
+    }
+    process_broadcast(data)
 
 
-# def test_devices():
-#     data = {
-#         "broadcast": "devices",
-#         "start": START,
-#         "end": END,
-#     }
-#     process_broadcast(data)
+def test_age_genders():
+    data = {
+        "broadcast": "age_genders",
+        "start": START,
+        "end": END,
+    }
+    process_broadcast(data)
+
+
+def test_devices():
+    data = {
+        "broadcast": "devices",
+        "start": START,
+        "end": END,
+    }
+    process_broadcast(data)
 
 
 def test_country_region():
