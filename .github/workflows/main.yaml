@@ -7,8 +7,6 @@ on:
 env:
   FUNCTIONS_NAME: evolve_fb_ads_insights
   REGION: us-central1
-  TOPIC_ID: fb_ads_insights
-  API_VER: v11.0
 
 jobs:
   setup:
@@ -27,11 +25,11 @@ jobs:
         run: >-
           gcloud functions deploy ${{ env.FUNCTIONS_NAME }}
           --entry-point=main
-          --region=${{ env.REGION }}
+          --region=us-central1
           --timeout=530
           --project=${{ secrets.PROJECT_ID }}
           --memory=1024MB
-          --runtime=python38
+          --runtime=python39
           --trigger-http
           --service-account=${{ secrets.GCP_SA }}
-          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},API_VER=${{ env.API_VER }},PROJECT_ID=${{ secrets.PROJECT_ID }},TOPIC_ID=${{ env.TOPIC_ID }}
+          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},PROJECT_ID=${{ secrets.PROJECT_ID }},PUBLIC_URL=${{ secrets.PUBLIC_URL }}
