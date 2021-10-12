@@ -143,8 +143,6 @@ dmypy.json
 .prof
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-sugatan*
-clients.yaml
 .vscode
 creds/
 .DS_Store

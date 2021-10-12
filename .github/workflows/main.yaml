@@ -6,7 +6,6 @@ on:
 
 env:
   FUNCTIONS_NAME: evolve_fb_ads_insights
-  REGION: us-central1
 
 jobs:
   setup:
