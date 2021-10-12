@@ -31,4 +31,4 @@ jobs:
           --runtime=python39
           --trigger-http
           --service-account=${{ secrets.GCP_SA }}
-          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},PROJECT_ID=${{ secrets.PROJECT_ID }},PUBLIC_URL=${{ secrets.PUBLIC_URL }}
+          --set-env-vars=ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }},PROJECT_ID=${{ secrets.PROJECT_ID }},PUBLIC_URL=${{ secrets.PUBLIC_URL }},GCP_SA=${{ secrets.GCP_SA }}
