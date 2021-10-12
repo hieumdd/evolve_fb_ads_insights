@@ -48,7 +48,10 @@ def test_pipelines(table, ads_account, start, end):
     if res["num_processed"] > 0:
         assert res["output_rows"] == res["num_processed"]
 
-
+@pytest.mark.parametrize(
+    "table",
+    TABLES,
+)
 @pytest.mark.parametrize(
     ("start", "end"),
     [
@@ -60,10 +63,10 @@ def test_pipelines(table, ads_account, start, end):
         "manual",
     ],
 )
-def test_tasks(start, end):
+def test_tasks(table, start, end):
     res = run(
         {
-            "task": "fb",
+            "task": table,
             "start": start,
             "end": end,
         }

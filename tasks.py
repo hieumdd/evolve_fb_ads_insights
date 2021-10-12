@@ -43,6 +43,7 @@ def create_tasks(tasks_data):
         {
             "name": f"{account['ad_account']}-{uuid.uuid4()}",
             "payload": {
+                "table": tasks_data["task"],
                 "ads_account": account,
                 "start": tasks_data.get("start"),
                 "end": tasks_data.get("end"),
