@@ -20,6 +20,7 @@ ACCOUNTS = [
     {"ad_account": "ChicagoENT_1125645734548778", "id": "act_1125645734548778"},
     {"ad_account": "PainReliefInstitute", "id": "act_2806329806303956"},
     {"ad_account": "SpecialtyCareInstitute", "id": "act_505620200866621"},
+    {"ad_account": "StrivePsychiatry", "id": "act_3158907461002773"},
 ]
 
 TASKS_CLIENT = tasks_v2.CloudTasksClient()
