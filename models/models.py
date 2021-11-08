@@ -159,7 +159,6 @@ class FacebookAdsInsights(metaclass=ABCMeta):
         }
         if after:
             params["after"] = after
-        params
         with session.get(
             f"{BASE_URL}/{report_run_id}/insights",
             params=params,
